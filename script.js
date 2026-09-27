@@ -165,7 +165,7 @@ function normalizeProduct(row, index) {
     presentation: row["Presentación"] || "",
     category: row["Categoría"] || "",
     benefits: row["Beneficios"] || "",
-    recommendedFor: row["Ideal para"] || "",
+    idealFor: row["Ideal para"] || "",
     howToUse: row["Modo de uso"] || "",
     ingredients: row["Ingredientes"] || "",
     image: row["URL de Imagen"] || "",
@@ -223,7 +223,7 @@ function applyFilters() {
   product.name,
   product.category,
   product.benefits,
-  product.recommendedFor,
+  product.idealFor,
   product.howToUse,
   product.ingredients
 ].join(" ").toLowerCase();
@@ -428,13 +428,13 @@ function openProductModal(id) {
         <h3>Beneficios</h3>
 <p>${escapeHTML(product.benefits)}</p>
 
-<h3>Recomendado para</h3>
-<p>${escapeHTML(product.recommendedFor)}</p>
+<h3>Ideal para</h3>
+<p>${escapeHTML(product.idealFor)}</p>
 
 <h3>Modo de uso</h3>
 <p>${escapeHTML(product.howToUse)}</p>
 
-<h3>Lista completa de ingredientes</h3>
+<h3>Ingredientes</h3>
 <p>${escapeHTML(product.ingredients)}</p>
         <button class="primary-button" data-modal-add="${escapeAttribute(product.id)}">Agregar al carrito</button>
       </div>
@@ -456,60 +456,3 @@ function closeModal() {
 }
 
 function sendWhatsAppOrder() {
-  const detailedCart = state.cart
-    .map(item => ({ ...item, product: findProduct(item.id) }))
-    .filter(item => item.product);
-
-  if (!detailedCart.length) {
-    alert("Agrega al menos un producto al carrito.");
-    return;
-  }
-
-  const total = detailedCart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
-  const lines = detailedCart.map(item =>
-    `• ${item.product.name} x${item.quantity} — ${formatMoney(item.product.price * item.quantity)}`
-  );
-
-  const message = [
-    "Hola, quiero hacer el siguiente pedido:",
-    "",
-    ...lines,
-    "",
-    `Total: ${formatMoney(total)}`,
-    "",
-    "¿Me pueden confirmar disponibilidad y entrega?"
-  ].join("\n");
-
-  const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-  window.location.href = url;
-}
-
-function saveCart() {
-  localStorage.setItem("seoulGlowCart", JSON.stringify(state.cart));
-}
-
-function formatMoney(value) {
-  return new Intl.NumberFormat("es-MX", {
-    style: "currency",
-    currency: "MXN"
-  }).format(value || 0);
-}
-
-function escapeHTML(value) {
-  return String(value || "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-function escapeAttribute(value) {
-  return escapeHTML(value);
-}
-
-function showError(message) {
-  elements.loading.classList.add("hidden");
-  elements.error.textContent = message;
-  elements.error.classList.remove("hidden");
-}
