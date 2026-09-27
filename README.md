@@ -1,2 +1,2 @@
-# Catálogo
+# catalogo
 Catálogo de productos Lunaria
