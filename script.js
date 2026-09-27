@@ -165,9 +165,9 @@ function normalizeProduct(row, index) {
     presentation: row["Presentación"] || "",
     category: row["Categoría"] || "",
     benefits: row["Beneficios"] || "",
-    recommendedFor: row["Recomendado para"] || "",
+    recommendedFor: row["Ideal para"] || "",
     howToUse: row["Modo de uso"] || "",
-    ingredients: row["Lista completa de Ingredientes"] || "",
+    ingredients: row["Ingredientes"] || "",
     image: row["URL de Imagen"] || "",
 
     // Campo interno: el sitio nunca lo imprime.
@@ -429,10 +429,10 @@ function openProductModal(id) {
 <p>${escapeHTML(product.benefits)}</p>
 
 <h3>Recomendado para</h3>
-<p>${escapeHTML(product.recommendedFor || "Consulta con nosotras para ayudarte a elegirlo según tu tipo de piel.")}</p>
+<p>${escapeHTML(product.recommendedFor)}</p>
 
 <h3>Modo de uso</h3>
-<p>${escapeHTML(product.howToUse || "Sigue las indicaciones del empaque y realiza prueba de parche cuando sea necesario.")}</p>
+<p>${escapeHTML(product.howToUse)}</p>
 
 <h3>Lista completa de ingredientes</h3>
 <p>${escapeHTML(product.ingredients)}</p>
