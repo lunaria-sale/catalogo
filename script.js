@@ -4,7 +4,7 @@ const WHATSAPP_NUMBER = "5217121368195";
 const state = {
   products: [],
   filteredProducts: [],
-  cart: JSON.parse(localStorage.getItem("seoulGlowCart") || "[]")
+  cart: JSON.parse(localStorage.getItem("LunariaCart") || "[]")
 };
 
 const elements = {
