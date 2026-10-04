@@ -4,115 +4,169 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Catálogo de skincare, haircare y maquillaje coreano">
-  <title>Lunaria | Catálogo.</title>
+  <title>Lunaria Skincare | Catálogo</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Poppins:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <header class="site-header">
     <a class="brand" href="#inicio" aria-label="Inicio" data-home-link>
-  <span class="brand-mark">✦</span>
-  <span>Lunaria Skincare</span>
-</a>
+      <span class="brand-mark">✦</span>
+      <span>Lunaria Skincare</span>
+    </a>
 
-    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">☰</button>
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">
+      ☰
+    </button>
 
-  <nav class="main-nav" id="mainNav">
-  <a href="#inicio" data-home-link>Inicio</a>
+    <nav class="main-nav" id="mainNav">
+      <a href="#inicio" data-home-link>Inicio</a>
 
-  <details class="nav-dropdown">
-    <summary>Marcas</summary>
-    <div class="dropdown-list" id="brandMenu">
-      <span class="menu-loading">Cargando marcas...</span>
-    </div>
-  </details>
+      <details class="nav-dropdown">
+        <summary>Marcas</summary>
+        <div class="dropdown-list" id="brandMenu">
+          <span class="menu-loading">Cargando marcas...</span>
+        </div>
+      </details>
 
-  <details class="nav-dropdown">
-    <summary>Categoría</summary>
-    <div class="dropdown-list" id="categoryMenu">
-      <span class="menu-loading">Cargando categorías...</span>
-    </div>
-  </details>
+      <details class="nav-dropdown">
+        <summary>Categoría</summary>
+        <div class="dropdown-list" id="categoryMenu">
+          <span class="menu-loading">Cargando categorías...</span>
+        </div>
+      </details>
 
-  <a href="#catalogo" data-catalog-link>Catálogo</a>
+      <a href="#catalogo" data-catalog-link>
+        Catálogo
+      </a>
 
-   <button class="cart-button" id="openCart">
-    Carrito <span id="cartCount">0</span>
-  </button>
-</nav>
-</header>
+      <button class="cart-button" id="openCart" type="button">
+        Carrito <span id="cartCount">0</span>
+      </button>
+    </nav>
+  </header>
 
-<main>
+  <main>
     <section class="hero" id="inicio">
       <div class="hero-copy">
-        <p class="eyebrow">Resalta tu esencia. </p>
-        <h1>Productos coreanos,<br><span> a precio justo, bonitos y a tu alcance.</span></h1>
-        <p>Skincare, haircare y maquillaje coreano para consentirte.</p>
-      <a class="primary-button" href="#catalogo" data-catalog-link>
-  Explorar catálogo
-</a>
-    <div class="hero-art">
-  <div class="hero-logo-card">
-    <img
-      src="assets/logo.png"
-      alt="Logo de Lunaria Skincare"
-    >
-  </div>
+        <p class="eyebrow">RESALTA TU ESENCIA</p>
 
-  <span class="flower flower-one">✿</span>
-  <span class="flower flower-two">✽</span>
-</div>
+        <h1>
+          Productos coreanos,<br>
+          <span>a precio justo, bonitos y a tu alcance.</span>
+        </h1>
+
+        <p>
+          Skincare, haircare y maquillaje coreano para consentirte.
+        </p>
+
+        <a class="primary-button" href="#catalogo" data-catalog-link>
+          Explorar catálogo
+        </a>
+      </div>
+
+      <div class="hero-art">
+        <div class="hero-logo-card">
+          <img
+            src="assets/logo.png"
+            alt="Logo de Lunaria Skincare"
+            onerror="this.parentElement.classList.add('logo-not-found')"
+          >
+
+          <span class="logo-fallback">
+            Lunaria
+          </span>
+        </div>
+
+        <span class="flower flower-one">✿</span>
+        <span class="flower flower-two">✽</span>
+      </div>
     </section>
-<section class="needs-section" id="necesidades">
+
+    <section class="needs-section" id="necesidades">
       <div class="section-heading">
         <p class="eyebrow">ENCUENTRA TU MATCH</p>
         <h2>Comprar por necesidad</h2>
       </div>
-      <div class="needs-grid">
-<div class="needs-grid" id="needsGrid">
-  <p class="status-message">Cargando necesidades...</p>
-</div>
+
+      <div class="needs-grid" id="needsGrid">
+        <p class="status-message">
+          Cargando necesidades...
+        </p>
+      </div>
     </section>
+
+    <section class="featured-section" id="destacados">
+      <div class="section-heading">
+        <p class="eyebrow">SELECCIÓN ESPECIAL</p>
+
+        <h2>Productos destacados</h2>
+
+        <p class="featured-subtitle">
+          Los favoritos de nuestra tienda y productos seleccionados para comenzar tu rutina.
+        </p>
+      </div>
+
+      <div id="featuredGrid" class="product-grid"></div>
+
+      <a
+        class="secondary-button"
+        href="#catalogo"
+        data-catalog-link
+      >
+        Ver todo el catálogo
+      </a>
+    </section>
+
     <section class="results-view hidden" id="resultsView">
-  <div class="results-heading">
-    <button class="back-home-button" id="backHomeButton">
-      ← Volver al inicio
-    </button>
+      <div class="results-heading">
+        <button
+          class="back-home-button"
+          id="backHomeButton"
+          type="button"
+        >
+          ← Volver al inicio
+        </button>
 
-    <p class="eyebrow" id="resultsEyebrow">SELECCIÓN</p>
-    <h2 id="resultsTitle">Productos</h2>
-    <p id="resultsDescription">
-      Productos seleccionados para ti.
-    </p>
-  </div>
+        <p class="eyebrow" id="resultsEyebrow">
+          SELECCIÓN
+        </p>
 
-  <div class="product-grid" id="resultsGrid"></div>
-</section>
-<section class="featured-section" id="destacados">
-  <div class="section-heading">
-    <p class="eyebrow">SELECCIÓN ESPECIAL</p>
-    <h2>Productos destacados</h2>
-    <p class="featured-subtitle">
-      Los favoritos de nuestra tienda y productos seleccionados para comenzar tu rutina.
-    </p>
-  </div>
+        <h2 id="resultsTitle">
+          Productos
+        </h2>
 
-  <div id="featuredGrid" class="product-grid"></div>
+        <p id="resultsDescription">
+          Productos seleccionados para ti.
+        </p>
+      </div>
 
-  <a class="secondary-button" href="#catalogo">
-    Ver todo el catálogo
-  </a>
-</section>
-  <section class="catalog-section hidden" id="catalogo">
+      <div class="product-grid" id="resultsGrid"></div>
+    </section>
+
+    <section class="catalog-section hidden" id="catalogo">
       <div class="catalog-toolbar">
         <div>
-          <p class="eyebrow">Skincare, Haircare y Maquillaje ORIGINAL</p>
-    <h2>Explora el catálogo</h2>
+          <p class="eyebrow">
+            SKINCARE, HAIRCARE Y MAQUILLAJE ORIGINAL
+          </p>
+
+          <h2>Explora el catálogo</h2>
         </div>
+
         <div class="toolbar-controls">
-          <input id="searchInput" type="search" placeholder="Buscar producto..." aria-label="Buscar producto">
+          <input
+            id="searchInput"
+            type="search"
+            placeholder="Buscar producto..."
+            aria-label="Buscar producto"
+          >
+
           <select id="sortSelect" aria-label="Ordenar productos">
             <option value="default">Ordenar</option>
             <option value="price-low">Precio menor</option>
@@ -122,24 +176,43 @@
         </div>
       </div>
 
-      <p id="loadingMessage" class="status-message">Cargando catálogo...</p>
+      <p id="loadingMessage" class="status-message">
+        Cargando catálogo...
+      </p>
+
       <p id="errorMessage" class="status-message error hidden"></p>
+
       <div id="productGrid" class="product-grid"></div>
     </section>
   </main>
 
-  <aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
+  <aside
+    class="cart-drawer"
+    id="cartDrawer"
+    aria-hidden="true"
+  >
     <div class="cart-header">
       <div>
         <p class="eyebrow">TU SELECCIÓN</p>
         <h2>Carrito</h2>
       </div>
-      <button class="close-button" id="closeCart" aria-label="Cerrar carrito">×</button>
+
+      <button
+        class="close-button"
+        id="closeCart"
+        type="button"
+        aria-label="Cerrar carrito"
+      >
+        ×
+      </button>
     </div>
 
     <div id="cartItems" class="cart-items"></div>
 
-    <section class="recommendations hidden" id="recommendations">
+    <section
+      class="recommendations hidden"
+      id="recommendations"
+    >
       <h3>Complementa tu rutina con...</h3>
       <div id="recommendationItems"></div>
     </section>
@@ -149,27 +222,74 @@
         <span>Total</span>
         <strong id="cartTotal">$0.00 MXN</strong>
       </div>
-      <button class="whatsapp-button" id="whatsappOrder">Pedir por WhatsApp</button>
-      <button class="clear-button" id="clearCart">Vaciar carrito</button>
+
+      <button
+        class="whatsapp-button"
+        id="whatsappOrder"
+        type="button"
+      >
+        Pedir por WhatsApp
+      </button>
+
+      <button
+        class="clear-button"
+        id="clearCart"
+        type="button"
+      >
+        Vaciar carrito
+      </button>
     </div>
   </aside>
 
   <div class="overlay hidden" id="overlay"></div>
 
-  <div class="modal hidden" id="productModal" role="dialog" aria-modal="true" aria-hidden="true">
-    <button class="modal-close" id="closeModal" aria-label="Cerrar producto">×</button>
+  <div
+    class="modal hidden"
+    id="productModal"
+    role="dialog"
+    aria-modal="true"
+    aria-hidden="true"
+  >
+    <button
+      class="modal-close"
+      id="closeModal"
+      type="button"
+      aria-label="Cerrar producto"
+    >
+      ×
+    </button>
+
     <div id="modalContent"></div>
   </div>
 
   <footer class="site-footer">
     <p>Lunaria Sale · Resalta tu esencia.</p>
-    <p>Los precios pueden cambiar sin previo aviso.</p>
-    <p>Aviso Legal: Lunaria actúa exclusivamente como distribuidor de productos de belleza coreana. El uso y aplicación de cualquier producto adquirido es responsabilidad absoluta del cliente. .</p>
-    <p>© 2026 Lunaria Sale. Todos los derechos reservados.</p>
-  <p>Lostextos, diseño y contenido original de este catálogo no pueden reproducirse, modificarse ni utilizarse con fines comerciales sin autorización previa.</p>
-  <p>Los nombres, imágenes y marcas de productos pertenecen a sus respectivos titulares.</p>  
+
+    <p>
+      Los precios pueden cambiar sin previo aviso.
+    </p>
+
+    <p>
+      Aviso legal: Lunaria actúa exclusivamente como distribuidor de productos
+      de belleza coreana. El uso y aplicación de cualquier producto adquirido
+      es responsabilidad absoluta del cliente.
+    </p>
+
+    <p>
+      © 2026 Lunaria Skincare. Todos los derechos reservados.
+    </p>
+
+    <p>
+      Los textos, diseño y contenido original de este catálogo no pueden
+      reproducirse, modificarse ni utilizarse con fines comerciales sin
+      autorización previa.
+    </p>
+
+    <p>
+      Los nombres, imágenes y marcas de productos pertenecen a sus respectivos titulares.
+    </p>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=7"></script>
 </body>
 </html>
