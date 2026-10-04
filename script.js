@@ -183,6 +183,7 @@ function normalizeProduct(row, index) {
     category: row["Categoría"] || "",
     benefits: row["Beneficios"] || "",
     idealFor: row["Ideal para"] || "",
+    needs: row["Necesidades"] || "",
     howToUse: row["Modo de uso"] || "",
     ingredients: row["Ingredientes"] || "",
     image: row["URL de Imagen"] || "",
@@ -232,16 +233,17 @@ function applyFilters() {
   const sort = elements.sort ? elements.sort.value : "";
 
   state.filteredProducts = state.products.filter(product => {
-    const searchable = [
-      product.brand,
-      product.name,
-      product.category,
-      product.benefits,
-      product.idealFor,
-      product.howToUse,
-      product.ingredients
-    ].join(" ").toLowerCase();
-
+  const searchable = [
+  product.brand,
+  product.name,
+  product.category,
+  product.benefits,
+  product.idealFor,
+  product.needs,
+  product.howToUse,
+  product.ingredients
+].join(" ").toLowerCase();
+    
     return (!brand || product.brand.toLowerCase() === brand) &&
       (!category || product.category.toLowerCase() === category) &&
       (!search || searchable.includes(search));
