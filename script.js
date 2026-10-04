@@ -5,6 +5,7 @@ const state = {
   products: [],
   filteredProducts: [],
   cart: JSON.parse(localStorage.getItem("LunariaCart") || "[]")
+   activeNeed: ""
 };
 
 const elements = {
@@ -79,18 +80,28 @@ function bindEvents() {
     });
   }
 
-  document.querySelectorAll(".need-card").forEach(button => {
-    button.addEventListener("click", () => {
-      document.querySelectorAll(".need-card").forEach(item => item.classList.remove("active"));
+document.querySelectorAll(".need-card").forEach(button => {
+  button.addEventListener("click", () => {
+    const selectedNeed = button.dataset.need.trim();
+
+    document.querySelectorAll(".need-card").forEach(item => {
+      item.classList.remove("active");
+    });
+
+    if (state.activeNeed === selectedNeed) {
+      state.activeNeed = "";
+    } else {
+      state.activeNeed = selectedNeed;
       button.classList.add("active");
-      if(elements.search) {
-        elements.search.value = button.dataset.need;
-        applyFilters();
-      }
-      const catElement = document.getElementById("catalogo");
-      if(catElement) catElement.scrollIntoView({ behavior: "smooth" });
+    }
+
+    applyFilters();
+    document.getElementById("catalogo").scrollIntoView({
+      behavior: "smooth"
     });
   });
+});
+
 
   if(elements.grid) {
     elements.grid.addEventListener("click", event => {
@@ -232,18 +243,32 @@ function applyFilters() {
   const search = elements.search ? elements.search.value.toLowerCase().trim() : "";
   const sort = elements.sort ? elements.sort.value : "";
 
-  state.filteredProducts = state.products.filter(product => {
+ state.filteredProducts = state.products.filter(product => {
   const searchable = [
-  product.brand,
-  product.name,
-  product.category,
-  product.benefits,
-  product.idealFor,
-  product.needs,
-  product.howToUse,
-  product.ingredients
-].join(" ").toLowerCase();
-    
+    product.brand,
+    product.name,
+    product.category,
+    product.benefits,
+    product.idealFor,
+    product.needs,
+    product.howToUse,
+    product.ingredients
+  ].join(" ").toLowerCase();
+
+  const productNeeds = String(product.needs || "")
+    .split("|")
+    .map(need => need.trim().toLowerCase())
+    .filter(Boolean);
+
+  const selectedNeed = state.activeNeed.trim().toLowerCase();
+
+  const matchesNeed = !selectedNeed || productNeeds.includes(selectedNeed);
+
+  return (!brand || product.brand.toLowerCase() === brand) &&
+    (!category || product.category.toLowerCase() === category) &&
+    (!search || searchable.includes(search)) &&
+    matchesNeed;
+});
     return (!brand || product.brand.toLowerCase() === brand) &&
       (!category || product.category.toLowerCase() === category) &&
       (!search || searchable.includes(search));
