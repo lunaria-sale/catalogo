@@ -12,40 +12,47 @@
 </head>
 <body>
   <header class="site-header">
-    <a class="brand" href="#inicio" aria-label="Inicio">
-      <span class="brand-mark">✦</span>
-      <span>Lunaria Skincare</span>
-    </a>
+    <a class="brand" href="#inicio" aria-label="Inicio" data-home-link>
+  <span class="brand-mark">✦</span>
+  <span>Lunaria Skincare</span>
+</a>
 
     <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">☰</button>
 
-    <nav class="main-nav" id="mainNav">
-      <a href="#inicio">Inicio</a>
-      <label>
-        Marca
-        <select id="brandFilter" aria-label="Comprar por marca">
-          <option value="">Todas las marcas</option>
-        </select>
-      </label>
-      <label>
-        Categoría
-        <select id="categoryFilter" aria-label="Comprar por categoría">
-          <option value="">Todas las categorías</option>
-        </select>
-      </label>
-      <button class="cart-button" id="openCart">
-        Carrito <span id="cartCount">0</span>
-      </button>
-    </nav>
-  </header>
+  <nav class="main-nav" id="mainNav">
+  <a href="#inicio" data-home-link>Inicio</a>
 
-  <main>
+  <details class="nav-dropdown">
+    <summary>Marcas</summary>
+    <div class="dropdown-list" id="brandMenu">
+      <span class="menu-loading">Cargando marcas...</span>
+    </div>
+  </details>
+
+  <details class="nav-dropdown">
+    <summary>Categoría</summary>
+    <div class="dropdown-list" id="categoryMenu">
+      <span class="menu-loading">Cargando categorías...</span>
+    </div>
+  </details>
+
+  <a href="#catalogo" data-catalog-link>Catálogo</a>
+
+   <button class="cart-button" id="openCart">
+    Carrito <span id="cartCount">0</span>
+  </button>
+</nav>
+</header>
+
+<main>
     <section class="hero" id="inicio">
       <div class="hero-copy">
         <p class="eyebrow">Resalta tu esencia. </p>
-        <h1>Tu ritual coreano,<br><span>más bonito.</span></h1>
+        <h1>Productos coreanos,<br><span> a precio justo, bonitos y a tu alcance.</span></h1>
         <p>Skincare, haircare y maquillaje coreano para consentirte.</p>
-        <a class="primary-button" href="#catalogo">Explorar catálogo</a>
+      <a class="primary-button" href="#catalogo" data-catalog-link>
+  Explorar catálogo
+</a>
       </div>
       <div class="hero-art" aria-hidden="true">
         <span class="flower flower-one">✿</span>
@@ -53,23 +60,31 @@
         <span class="hero-circle"></span>
       </div>
     </section>
-
-    <section class="needs-section">
+<section class="needs-section" id="necesidades">
       <div class="section-heading">
         <p class="eyebrow">ENCUENTRA TU MATCH</p>
         <h2>Comprar por necesidad</h2>
       </div>
       <div class="needs-grid">
-  <button class="need-card" data-need="Piel sensible">Piel sensible</button>
-  <button class="need-card" data-need="Irritación">Irritación</button>
-  <button class="need-card" data-need="Poros dilatados">Poros dilatados</button>
-  <button class="need-card" data-need="Despigmentante">Despigmentante</button>
-  <button class="need-card" data-need="Hidratación profunda">Hidratación profunda</button>
-  <button class="need-card" data-need="Acné">Acné</button>
-  <button class="need-card" data-need="Piel grasa">Piel grasa</button>
-  <button class="need-card" data-need="Longevidad cutánea">Longevidad cutánea</button>
+<div class="needs-grid" id="needsGrid">
+  <p class="status-message">Cargando necesidades...</p>
 </div>
     </section>
+    <section class="results-view hidden" id="resultsView">
+  <div class="results-heading">
+    <button class="back-home-button" id="backHomeButton">
+      ← Volver al inicio
+    </button>
+
+    <p class="eyebrow" id="resultsEyebrow">SELECCIÓN</p>
+    <h2 id="resultsTitle">Productos</h2>
+    <p id="resultsDescription">
+      Productos seleccionados para ti.
+    </p>
+  </div>
+
+  <div class="product-grid" id="resultsGrid"></div>
+</section>
 <section class="featured-section" id="destacados">
   <div class="section-heading">
     <p class="eyebrow">SELECCIÓN ESPECIAL</p>
@@ -85,7 +100,7 @@
     Ver todo el catálogo
   </a>
 </section>
-    <section class="catalog-section" id="catalogo">
+  <section class="catalog-section hidden" id="catalogo">
       <div class="catalog-toolbar">
         <div>
           <p class="eyebrow">Skincare, Haircare y Maquillaje ORIGINAL</p>
