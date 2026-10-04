@@ -546,15 +546,15 @@ function renderCategoryMenu() {
 }
 
 function renderFeaturedProducts() {
-  if (!elements.featuredGrid) return;
+  if (!elements.featuredGrid) {
+    return;
+  }
 
-  const featuredProducts = state.products
-    .filter(product => {
-      const value = normalizeHeader(product.featured);
+  const featuredProducts = state.products.filter(product => {
+    const value = normalizeHeader(product.featured);
 
-      return value === "si" || value === "yes";
-    })
-    .slice(0, 8);
+    return value === "si" || value === "yes";
+  });
 
   if (!featuredProducts.length) {
     elements.featuredGrid.innerHTML = `
