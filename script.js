@@ -24,13 +24,15 @@ const elements = {
   recommendations: document.getElementById("recommendations"),
   recommendationItems: document.getElementById("recommendationItems"),
   modal: document.getElementById("productModal"),
-  modalContent: document.getElementById("modalContent")
+  modalContent: document.getElementById("modalContent"),
+  featuredGrid: document.getElementById("featuredGrid")
 };
 
 document.addEventListener("DOMContentLoaded", init);
 
 async function init() {
   bindEvents();
+  
   renderCart();
 
   if (!CSV_URL.startsWith("http")) {
@@ -48,6 +50,7 @@ async function init() {
       .filter(product => product.name);
 
     populateFilters();
+    renderFeaturedProducts();
     applyFilters();
   } catch (error) {
     showError("No se pudo cargar el catálogo. Revisa que Google Sheets esté publicado como CSV.");
@@ -107,6 +110,14 @@ document.querySelectorAll(".need-card").forEach(button => {
     elements.grid.addEventListener("click", event => {
       const addButton = event.target.closest("[data-add]");
       const viewButton = event.target.closest("[data-view]");
+      
+      elements.featuredGrid.addEventListener("click", event => {
+  const addButton = event.target.closest("[data-add]");
+  const viewButton = event.target.closest("[data-view]");
+
+  if (addButton) addToCart(addButton.dataset.add);
+  if (viewButton) openProductModal(viewButton.dataset.view);
+});
 
       if (addButton) addToCart(addButton.dataset.add);
       if (viewButton) openProductModal(viewButton.dataset.view);
@@ -283,6 +294,63 @@ function applyFilters() {
     state.filteredProducts.sort((a, b) => a.name.localeCompare(b.name, "es"));
   }
 
+function renderFeaturedProducts() {
+  if (!elements.featuredGrid) return;
+
+  const featuredProducts = state.products
+    .filter(product =>
+      String(product.featured)
+        .trim()
+        .toLowerCase() === "sí" ||
+      String(product.featured)
+        .trim()
+        .toLowerCase() === "si" ||
+      String(product.featured)
+        .trim()
+        .toLowerCase() === "yes"
+    )
+    .slice(0, 8);
+
+  if (!featuredProducts.length) {
+    elements.featuredGrid.innerHTML = `
+      <p class="status-message">
+        Próximamente encontrarás nuestra selección favorita.
+      </p>
+    `;
+    return;
+  }
+
+  elements.featuredGrid.innerHTML = featuredProducts.map(product => `
+    <article class="product-card">
+      <div class="product-image-wrap">
+        <span class="product-brand">${escapeHTML(product.brand)}</span>
+
+        <img
+          class="product-image"
+          src="${escapeAttribute(product.image)}"
+          alt="${escapeAttribute(product.name)}"
+          loading="lazy"
+          onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22300%22 viewBox=%220 0 300 300%22%3E%3Crect width=%22300%22 height=%22300%22 fill=%22%23f9d8e4%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23ef68ab%22 font-family=%22Arial%22 font-size=%2218%22%3ENombre%20de%20tu%20marca%3C/text%3E%3C/svg%3E'">
+      </div>
+
+      <div class="product-info">
+        <p class="product-category">${escapeHTML(product.category)}</p>
+        <h3 class="product-name">${escapeHTML(product.name)}</h3>
+        <p class="product-presentation">${escapeHTML(product.presentation)}</p>
+
+        <div class="product-bottom">
+          <span class="product-price">${formatMoney(product.price)}</span>
+          <button class="view-button" data-view="${escapeAttribute(product.id)}">
+            Ver detalle
+          </button>
+          <button class="add-button" data-add="${escapeAttribute(product.id)}">
+            Agregar
+          </button>
+        </div>
+      </div>
+    </article>
+  `).join("");
+}
   renderProducts();
 }
 
