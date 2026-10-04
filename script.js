@@ -1010,7 +1010,7 @@ function sendWhatsAppOrder() {
     `https://wa.me/${WHATSAPP_NUMBER}?text=` +
     encodeURIComponent(message);
 
-  window.location.href = whatsappUrl;
+  window.open(whatsappUrl, "_blank");
 }
 
 function formatMoney(amount) {
