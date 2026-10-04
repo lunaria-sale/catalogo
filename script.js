@@ -198,6 +198,7 @@ function normalizeProduct(row, index) {
     howToUse: row["Modo de uso"] || "",
     ingredients: row["Ingredientes"] || "",
     image: row["URL de Imagen"] || "",
+    featured: getCellValue(row, ["Destacado", "Featured"]) || "No",
     internalCost: parseMoney(row["Costo Original Interno"]),
     price: parseMoney(row["Precio de Venta"])
   };
