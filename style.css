@@ -801,4 +801,38 @@ h2 {
   .needs-grid {
     grid-template-columns: 1fr;
   }
+  .featured-section {
+  max-width: 1250px;
+  margin: 0 auto;
+  padding: 72px 5vw;
+  background: linear-gradient(180deg, #fff7eb 0%, #fffdf9 100%);
+}
+
+.featured-subtitle {
+  max-width: 620px;
+  margin: 12px auto 0;
+  color: var(--muted);
+  font-size: .92rem;
+  line-height: 1.6;
+}
+
+.secondary-button {
+  display: block;
+  width: fit-content;
+  margin: 34px auto 0;
+  padding: 13px 22px;
+  color: var(--hot-pink);
+  background: white;
+  border: 1px solid var(--hot-pink);
+  border-radius: 50px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: .2s ease;
+}
+
+.secondary-button:hover {
+  color: white;
+  background: var(--hot-pink);
+  transform: translateY(-2px);
+}
 }
