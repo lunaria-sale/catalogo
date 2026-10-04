@@ -835,4 +835,125 @@ h2 {
   background: var(--hot-pink);
   transform: translateY(-2px);
 }
+  .nav-dropdown {
+  position: relative;
+}
+
+.nav-dropdown summary {
+  padding: 9px 12px;
+  color: var(--ink);
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: .82rem;
+  font-weight: 600;
+  list-style: none;
+}
+
+.nav-dropdown summary::-webkit-details-marker {
+  display: none;
+}
+
+.nav-dropdown summary::after {
+  content: "⌄";
+  margin-left: 6px;
+  color: var(--hot-pink);
+}
+
+.dropdown-list {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  display: flex;
+  width: 245px;
+  max-height: 330px;
+  overflow-y: auto;
+  flex-direction: column;
+  padding: 8px;
+  background: var(--white);
+  border: 1px solid #f3c8d9;
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+}
+
+.dropdown-option {
+  padding: 10px 12px;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  border-radius: 10px;
+  text-align: left;
+  font-size: .8rem;
+  cursor: pointer;
+}
+
+.dropdown-option:hover {
+  color: white;
+  background: var(--hot-pink);
+}
+
+.menu-loading {
+  padding: 12px;
+  color: var(--muted);
+  font-size: .78rem;
+}
+
+.results-view {
+  max-width: 1400px;
+  min-height: 70vh;
+  margin: 0 auto;
+  padding: 70px 5vw;
+  background: var(--white);
+}
+
+.results-heading {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.results-heading h2 {
+  margin-bottom: 10px;
+}
+
+.results-heading p:not(.eyebrow) {
+  color: var(--muted);
+}
+
+.back-home-button {
+  margin-bottom: 25px;
+  padding: 9px 15px;
+  color: var(--hot-pink);
+  background: white;
+  border: 1px solid #f3b6d0;
+  border-radius: 50px;
+  font-weight: 700;
+}
+
+.back-home-button:hover {
+  color: white;
+  background: var(--hot-pink);
+}
+
+.nav-dropdown[open] summary {
+  color: var(--hot-pink);
+  background: #fff0f5;
+}
+
+@media (max-width: 760px) {
+  .dropdown-list {
+    position: static;
+    width: 100%;
+    max-height: 240px;
+    margin-top: 5px;
+    box-shadow: none;
+  }
+
+  .nav-dropdown {
+    width: 100%;
+  }
+
+  .nav-dropdown summary {
+    display: block;
+    padding: 12px 0;
+  }
+}
 }
