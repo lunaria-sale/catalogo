@@ -27,7 +27,18 @@ const elements = {
   modal: document.getElementById("productModal"),
   modalContent: document.getElementById("modalContent"),
   featuredGrid: document.getElementById("featuredGrid"),
-  needsGrid: document.getElementById("needsGrid")
+  needsGrid: document.getElementById("needsGrid"),
+  brandMenu: document.getElementById("brandMenu"),
+  categoryMenu: document.getElementById("categoryMenu"),
+  resultsView: document.getElementById("resultsView"),
+  resultsGrid: document.getElementById("resultsGrid"),
+  resultsTitle: document.getElementById("resultsTitle"),
+  resultsEyebrow: document.getElementById("resultsEyebrow"),
+  resultsDescription: document.getElementById("resultsDescription"),
+  catalogSection: document.getElementById("catalogo"),
+  featuredSection: document.getElementById("destacados"),
+  needsSection: document.getElementById("necesidades"),
+  backHomeButton: document.getElementById("backHomeButton")
 };
 
 document.addEventListener("DOMContentLoaded", init);
@@ -59,6 +70,8 @@ async function init() {
     }
 
     populateFilters();
+    renderBrandMenu();
+renderCategoryMenu();
     renderNeeds();
     renderFeaturedProducts();
     applyFilters();
@@ -67,8 +80,112 @@ async function init() {
     showError("No se pudo cargar el catálogo. Revisa el enlace CSV de Google Sheets.");
   }
 }
+function showCatalogView() {
+  if (elements.featuredSection) {
+    elements.featuredSection.classList.add("hidden");
+  }
 
+  if (elements.needsSection) {
+    elements.needsSection.classList.add("hidden");
+  }
+
+  if (elements.resultsView) {
+    elements.resultsView.classList.add("hidden");
+  }
+
+  if (elements.catalogSection) {
+    elements.catalogSection.classList.remove("hidden");
+    elements.catalogSection.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
+
+  history.replaceState(null, "", "#catalogo");
+}
 function bindEvents() {
+  document.querySelectorAll("[data-catalog-link]").forEach(link => {
+  link.addEventListener("click", event => {
+    event.preventDefault();
+    showCatalogView();
+  });
+});
+  document.querySelectorAll("[data-home-link]").forEach(link => {
+  link.addEventListener("click", event => {
+    event.preventDefault();
+    showHomeView();
+  });
+});
+if (elements.resultsGrid) {
+  elements.resultsGrid.addEventListener("click", event => {
+    const addButton = event.target.closest("[data-add]");
+    const viewButton = event.target.closest("[data-view]");
+
+    if (addButton) {
+      addToCart(addButton.dataset.add);
+    }
+
+    if (viewButton) {
+      openProductModal(viewButton.dataset.view);
+    }
+  });
+}
+if (elements.backHomeButton) {
+  elements.backHomeButton.addEventListener("click", showHomeView);
+}
+  if (elements.brandMenu) {
+  elements.brandMenu.addEventListener("click", event => {
+    const button = event.target.closest("[data-brand]");
+
+    if (!button) return;
+
+    const brand = button.dataset.brand;
+
+    renderResults(
+      state.products.filter(product =>
+        product.brand.toLowerCase() === brand.toLowerCase()
+      ),
+      brand,
+      "COMPRAR POR MARCA",
+      `Productos disponibles de ${brand}.`
+    );
+
+    history.replaceState(
+      null,
+      "",
+      `#marca-${slugify(brand)}`
+    );
+
+    button.closest("details").open = false;
+  });
+}
+
+if (elements.categoryMenu) {
+  elements.categoryMenu.addEventListener("click", event => {
+    const button = event.target.closest("[data-category]");
+
+    if (!button) return;
+
+    const category = button.dataset.category;
+
+    renderResults(
+      state.products.filter(product =>
+        product.category.toLowerCase() === category.toLowerCase()
+      ),
+      category,
+      "COMPRAR POR CATEGORÍA",
+      `Productos disponibles en ${category}.`
+    );
+
+    history.replaceState(
+      null,
+      "",
+      `#categoria-${slugify(category)}`
+    );
+
+    button.closest("details").open = false;
+  });
+}
   if (elements.brandFilter) {
     elements.brandFilter.addEventListener("change", applyFilters);
   }
@@ -127,16 +244,14 @@ function bindEvents() {
   }
 
   if (elements.needsGrid) {
-    elements.needsGrid.addEventListener("click", event => {
-      const button = event.target.closest(".need-card");
+  elements.needsGrid.addEventListener("click", event => {
+    const button = event.target.closest(".need-card");
 
-      if (!button) return;
+    if (!button) return;
 
-      const selectedNeed = button.dataset.need.trim();
-
-      document.querySelectorAll(".need-card").forEach(item => {
-        item.classList.remove("active");
-      });
+    showProductsByNeed(button.dataset.need);
+  });
+}
 
       if (state.activeNeed === selectedNeed) {
         state.activeNeed = "";
@@ -218,7 +333,14 @@ function bindEvents() {
     });
   }
 }
-
+function slugify(value) {
+  return String(value || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
 function parseCSV(text) {
   const rows = [];
   let row = [];
@@ -365,7 +487,7 @@ function normalizeProduct(row, index) {
   const featured = getCellValue(row, [
     "Destacado",
     "Featured"
-  ]) || "No";
+  ]);
 
   const internalCost = parseMoney(getCellValue(row, [
     "Costo Original Interno",
@@ -409,7 +531,7 @@ function normalizeProduct(row, index) {
     price
   };
 }
-
+ 
 function parseMoney(value) {
   if (typeof value === "number") {
     return value;
@@ -567,7 +689,102 @@ function applyFilters() {
 
   renderProducts();
 }
+function renderResults(products, title, eyebrow, description) {
+  if (!elements.resultsView || !elements.resultsGrid) return;
 
+  elements.resultsEyebrow.textContent = eyebrow || "SELECCIÓN";
+  elements.resultsTitle.textContent = title || "Productos";
+  elements.resultsDescription.textContent =
+    description || "Productos seleccionados para ti.";
+
+  if (!products.length) {
+    elements.resultsGrid.innerHTML = `
+      <p class="status-message">
+        No encontramos productos en esta selección.
+      </p>
+    `;
+  } else {
+    elements.resultsGrid.innerHTML =
+      products.map(renderProductCard).join("");
+  }
+
+  showOnlyResultsView();
+}
+function showOnlyResultsView() {
+  if (elements.featuredSection) {
+    elements.featuredSection.classList.add("hidden");
+  }
+
+  if (elements.needsSection) {
+    elements.needsSection.classList.add("hidden");
+  }
+
+  if (elements.catalogSection) {
+    elements.catalogSection.classList.add("hidden");
+  }
+
+  if (elements.resultsView) {
+    elements.resultsView.classList.remove("hidden");
+    elements.resultsView.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
+}
+
+function showHomeView() {
+  if (elements.resultsView) {
+    elements.resultsView.classList.add("hidden");
+  }
+
+  if (elements.catalogSection) {
+    elements.catalogSection.classList.add("hidden");
+  }
+
+  if (elements.featuredSection) {
+    elements.featuredSection.classList.remove("hidden");
+  }
+
+  if (elements.needsSection) {
+    elements.needsSection.classList.remove("hidden");
+  }
+
+  const hero = document.getElementById("inicio");
+
+  if (hero) {
+    hero.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
+
+  history.replaceState(null, "", "#inicio");
+}
+function showProductsByNeed(need) {
+  const selectedNeed = need.trim().toLowerCase();
+
+  const products = state.products.filter(product => {
+    const productNeeds = String(product.needs || "")
+      .split("|")
+      .map(value => value.trim().toLowerCase())
+      .filter(Boolean);
+
+    return productNeeds.includes(selectedNeed);
+  });
+
+  renderResults(
+    products,
+    need,
+    "COMPRAR POR NECESIDAD",
+    `Productos seleccionados para: ${need}.`
+  );
+
+  history.replaceState(
+    null,
+    "",
+    `#necesidad-${slugify(need)}`
+  );
+}
 function renderFeaturedProducts() {
   if (!elements.featuredGrid) {
     return;
@@ -1051,4 +1268,47 @@ function showError(message) {
   } else {
     alert(message);
   }
+  function renderBrandMenu() {
+  if (!elements.brandMenu) return;
+
+  const brands = [
+    ...new Set(
+      state.products
+        .map(product => product.brand)
+        .filter(Boolean)
+    )
+  ].sort((a, b) => a.localeCompare(b, "es"));
+
+  elements.brandMenu.innerHTML = brands.map(brand => `
+    <button
+      type="button"
+      class="dropdown-option"
+      data-brand="${escapeAttribute(brand)}"
+    >
+      ${escapeHTML(brand)}
+    </button>
+  `).join("");
+}
+
+function renderCategoryMenu() {
+  if (!elements.categoryMenu) return;
+
+  const categories = [
+    ...new Set(
+      state.products
+        .map(product => product.category)
+        .filter(Boolean)
+    )
+  ].sort((a, b) => a.localeCompare(b, "es"));
+
+  elements.categoryMenu.innerHTML = categories.map(category => `
+    <button
+      type="button"
+      class="dropdown-option"
+      data-category="${escapeAttribute(category)}"
+    >
+      ${escapeHTML(category)}
+    </button>
+  `).join("");
+}
 }
